@@ -30,9 +30,9 @@ export default function RootLayout() {
       <Tabs.Screen
         name="(tabs)/clubs"
         options={{
-          title: "Clubs",
+          title: "Featured",
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="trophy" size={size} color={color} />
+            <FontAwesome5 name="star" size={size} color={color} />
           ),
         }}
       />
@@ -43,6 +43,12 @@ export default function RootLayout() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="user" size={size} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="club/[id]"
+        options={{
+          href: null, // This hides it from the tab bar
         }}
       />
     </Tabs>

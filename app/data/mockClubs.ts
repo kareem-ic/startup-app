@@ -60,4 +60,7 @@ export const mockClubs: Club[] = [
     fees: '$75/month',
     contactInfo: '(555) 456-7890'
   }
-]; 
+];
+
+// Default export to fix the warning
+export default mockClubs; 
