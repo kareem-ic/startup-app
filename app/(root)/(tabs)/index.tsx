@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { router } from "expo-router";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
   return (
@@ -18,9 +18,28 @@ export default function Index() {
         Find local sports leagues and clubs for your kids
       </Text>
       
-      <Link href="/explore" className="bg-blue-500 px-6 py-3 rounded-lg">
-        <Text className="text-white font-semibold">Start Searching</Text>
-      </Link>
+      <View className="space-y-4 w-full">
+        <TouchableOpacity 
+          className="bg-blue-500 px-6 py-3 rounded-lg"
+          onPress={() => router.push('/(root)/(tabs)/explore')}
+        >
+          <Text className="text-white font-semibold text-center">Start Searching</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          className="bg-green-500 px-6 py-3 rounded-lg"
+          onPress={() => router.push('/sign-up')}
+        >
+          <Text className="text-white font-semibold text-center">Create Account</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          className="bg-gray-500 px-6 py-3 rounded-lg"
+          onPress={() => router.push('/sign-in')}
+        >
+          <Text className="text-white font-semibold text-center">Sign In</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
