@@ -3,6 +3,9 @@ import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function Index() {
+  // Mock authentication state - later this will come from your auth system
+  const isAuthenticated = false; // Set to false to show the unauthenticated state
+
   return (
     <ScrollView className="flex-1 bg-gradient-to-b from-blue-50 to-white">
       <View className="px-6 pt-16 pb-8">
@@ -22,62 +25,88 @@ export default function Index() {
           </Text>
         </View>
 
-        {/* Quick Actions */}
-        <View className="space-y-4 mb-8">
-          <TouchableOpacity 
-            className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-2xl shadow-lg"
-            onPress={() => router.push('/(root)/(tabs)/explore')}
-          >
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                <View className="bg-white/20 w-12 h-12 rounded-full items-center justify-center mr-4">
-                  <FontAwesome5 name="search" size={20} color="white" />
+        {!isAuthenticated ? (
+          // Unauthenticated State - Focus on account creation
+          <View className="space-y-6">
+            {/* Primary CTA - Create Account */}
+            <TouchableOpacity 
+              className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-2xl shadow-lg"
+              onPress={() => router.push('/sign-up')}
+            >
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center">
+                  <View className="bg-white/20 w-12 h-12 rounded-full items-center justify-center mr-4">
+                    <FontAwesome5 name="user-plus" size={20} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-white font-bold text-xl">Create Account</Text>
+                    <Text className="text-green-100 text-sm">Join our community</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text className="text-white font-bold text-xl">Start Searching</Text>
-                  <Text className="text-blue-100 text-sm">Find clubs near you</Text>
-                </View>
+                <FontAwesome5 name="chevron-right" size={16} color="white" />
               </View>
-              <FontAwesome5 name="chevron-right" size={16} color="white" />
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity 
-            className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-2xl shadow-lg"
-            onPress={() => router.push('/sign-up')}
-          >
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                <View className="bg-white/20 w-12 h-12 rounded-full items-center justify-center mr-4">
-                  <FontAwesome5 name="user-plus" size={20} color="white" />
+            {/* Secondary CTA - Sign In */}
+            <TouchableOpacity 
+              className="bg-gradient-to-r from-gray-600 to-gray-700 p-6 rounded-2xl shadow-lg"
+              onPress={() => router.push('/sign-in')}
+            >
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center">
+                  <View className="bg-white/20 w-12 h-12 rounded-full items-center justify-center mr-4">
+                    <FontAwesome5 name="sign-in-alt" size={20} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-white font-bold text-xl">Sign In</Text>
+                    <Text className="text-gray-200 text-sm">Welcome back!</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text className="text-white font-bold text-xl">Create Account</Text>
-                  <Text className="text-green-100 text-sm">Join our community</Text>
-                </View>
+                <FontAwesome5 name="chevron-right" size={16} color="white" />
               </View>
-              <FontAwesome5 name="chevron-right" size={16} color="white" />
-            </View>
-          </TouchableOpacity>
+            </TouchableOpacity>
 
-          <TouchableOpacity 
-            className="bg-gradient-to-r from-gray-600 to-gray-700 p-6 rounded-2xl shadow-lg"
-            onPress={() => router.push('/sign-in')}
-          >
-            <View className="flex-row items-center justify-between">
-              <View className="flex-row items-center">
-                <View className="bg-white/20 w-12 h-12 rounded-full items-center justify-center mr-4">
-                  <FontAwesome5 name="sign-in-alt" size={20} color="white" />
+            {/* Benefits Section */}
+            <View className="bg-white rounded-2xl p-6 shadow-sm">
+              <Text className="text-xl font-bold text-gray-900 mb-4">Why Create an Account?</Text>
+              <View className="space-y-3">
+                <View className="flex-row items-center">
+                  <FontAwesome5 name="check-circle" size={16} color="#10B981" />
+                  <Text className="text-gray-700 ml-3">Save your favorite clubs</Text>
                 </View>
-                <View>
-                  <Text className="text-white font-bold text-xl">Sign In</Text>
-                  <Text className="text-gray-200 text-sm">Welcome back!</Text>
+                <View className="flex-row items-center">
+                  <FontAwesome5 name="check-circle" size={16} color="#10B981" />
+                  <Text className="text-gray-700 ml-3">Get personalized recommendations</Text>
+                </View>
+                <View className="flex-row items-center">
+                  <FontAwesome5 name="check-circle" size={16} color="#10B981" />
+                  <Text className="text-gray-700 ml-3">Track your search history</Text>
                 </View>
               </View>
-              <FontAwesome5 name="chevron-right" size={16} color="white" />
             </View>
-          </TouchableOpacity>
-        </View>
+          </View>
+        ) : (
+          // Authenticated State - Show search functionality
+          <View className="space-y-4 mb-8">
+            <TouchableOpacity 
+              className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-2xl shadow-lg"
+              onPress={() => router.push('/(root)/(tabs)/explore')}
+            >
+              <View className="flex-row items-center justify-between">
+                <View className="flex-row items-center">
+                  <View className="bg-white/20 w-12 h-12 rounded-full items-center justify-center mr-4">
+                    <FontAwesome5 name="search" size={20} color="white" />
+                  </View>
+                  <View>
+                    <Text className="text-white font-bold text-xl">Start Searching</Text>
+                    <Text className="text-blue-100 text-sm">Find clubs near you</Text>
+                  </View>
+                </View>
+                <FontAwesome5 name="chevron-right" size={16} color="white" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Popular Sports Section */}
         <View className="mb-8">
