@@ -28,11 +28,20 @@ export default function RootLayout() {
         }}
       />
       <Tabs.Screen
-        name="(tabs)/clubs"
+        name="(tabs)/featured"
         options={{
           title: "Featured",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="star" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="(tabs)/clubs"
+        options={{
+          title: "Favorites",
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="heart" size={size} color={color} />
           ),
         }}
       />
