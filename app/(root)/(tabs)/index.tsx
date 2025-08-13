@@ -1,10 +1,10 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Index() {
-  // Mock authentication state - later this will come from your auth system
-  const isAuthenticated = false; // Set to false to show the unauthenticated state
+  const { isAuthenticated } = useAuth();
 
   return (
     <ScrollView className="flex-1 bg-gradient-to-b from-blue-50 to-white">

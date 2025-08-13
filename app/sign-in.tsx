@@ -2,20 +2,20 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useAuth } from './context/AuthContext';
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { signIn, loading } = useAuth();
 
-  const handleSignIn = () => {
-    if (!email || !password) {
-      alert('Please fill in all fields');
-      return;
+  const handleSignIn = async () => {
+    try {
+      await signIn(email, password);
+      router.replace('/(root)/(tabs)');
+    } catch (e: any) {
+      alert(e.message || 'Failed to sign in');
     }
-
-    // For now, just navigate to the main app
-    // Later this will validate credentials and authenticate
-    router.replace('/(root)/(tabs)');
   };
 
   return (
@@ -61,8 +61,9 @@ export default function SignIn() {
           <TouchableOpacity 
             className="bg-blue-500 py-4 rounded-lg mt-6"
             onPress={handleSignIn}
+            disabled={loading}
           >
-            <Text className="text-white text-center font-semibold text-lg">Sign In</Text>
+            <Text className="text-white text-center font-semibold text-lg">{loading ? 'Signing In...' : 'Sign In'}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 

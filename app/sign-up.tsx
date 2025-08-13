@@ -1,14 +1,17 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useAuth } from './context/AuthContext';
 
 export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const { signUp, loading } = useAuth();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!name || !email || !password || !confirmPassword) {
       alert('Please fill in all fields');
       return;
@@ -19,14 +22,25 @@ export default function SignUp() {
       return;
     }
 
-    // For now, just navigate to the main app
-    // Later this will save user data and authenticate
-    router.replace('/(root)/(tabs)');
+    try {
+      await signUp(name, email, password);
+      router.replace('/(root)/(tabs)');
+    } catch (e: any) {
+      alert(e.message || 'Failed to create account');
+    }
   };
 
   return (
     <ScrollView className="flex-1 bg-gray-50">
       <View className="p-6 pt-20">
+        {/* Back Button */}
+        <TouchableOpacity className="mb-6" onPress={() => router.back()}>
+          <View className="flex-row items-center">
+            <FontAwesome5 name="arrow-left" size={16} color="#3B82F6" />
+            <Text className="text-blue-500 ml-2 font-medium">Back</Text>
+          </View>
+        </TouchableOpacity>
+
         <Text className="text-3xl font-bold text-center mb-8">Create Account</Text>
         
         <View className="space-y-4">
@@ -77,8 +91,9 @@ export default function SignUp() {
           <TouchableOpacity 
             className="bg-blue-500 py-4 rounded-lg mt-6"
             onPress={handleSignUp}
+            disabled={loading}
           >
-            <Text className="text-white text-center font-semibold text-lg">Sign Up</Text>
+            <Text className="text-white text-center font-semibold text-lg">{loading ? 'Creating Account...' : 'Sign Up'}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity 

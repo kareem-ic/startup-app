@@ -1,11 +1,14 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { useFavorites } from '../../context/FavoritesContext';
 import { Club, mockClubs } from '../../data/mockClubs';
 
 const Explore = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Club[]>([]);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const handleSearch = () => {
     if (!searchQuery.trim()) {
@@ -24,6 +27,10 @@ const Explore = () => {
 
   const handleClubPress = (clubId: string) => {
     router.push(`/club/${clubId}`);
+  };
+
+  const handleFavoritePress = (club: Club) => {
+    toggleFavorite(club);
   };
 
   return (
@@ -51,16 +58,31 @@ const Explore = () => {
       <ScrollView className="flex-1">
         {searchResults.length > 0 ? (
           searchResults.map(club => (
-            <TouchableOpacity 
-              key={club.id} 
-              className="bg-white p-4 rounded-lg mb-3 border border-gray-200"
-              onPress={() => handleClubPress(club.id)}
-            >
-              <Text className="text-lg font-semibold">{club.name}</Text>
-              <Text className="text-gray-600">{club.sport} • {club.city}</Text>
-              <Text className="text-gray-500">{club.ageRange} • {club.competitiveLevel}</Text>
-              <Text className="text-gray-500">{club.fees}</Text>
-            </TouchableOpacity>
+            <View key={club.id} className="bg-white p-4 rounded-lg mb-3 border border-gray-200">
+              <View className="flex-row items-start justify-between">
+                <TouchableOpacity 
+                  className="flex-1"
+                  onPress={() => handleClubPress(club.id)}
+                >
+                  <Text className="text-lg font-semibold">{club.name}</Text>
+                  <Text className="text-gray-600">{club.sport} • {club.city}</Text>
+                  <Text className="text-gray-500">{club.ageRange} • {club.competitiveLevel}</Text>
+                  <Text className="text-gray-500">{club.fees}</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity 
+                  onPress={() => handleFavoritePress(club)}
+                  className="ml-3 p-2"
+                >
+                  <FontAwesome5 
+                    name={isFavorite(club.id) ? "heart" : "heart"} 
+                    size={20} 
+                    color={isFavorite(club.id) ? "#EF4444" : "#D1D5DB"} 
+                    solid={isFavorite(club.id)}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
           ))
         ) : searchQuery ? (
           <Text className="text-center text-gray-500 mt-8">No clubs found. Try a different search.</Text>
