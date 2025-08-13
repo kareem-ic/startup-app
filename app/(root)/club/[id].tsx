@@ -14,7 +14,7 @@ export default function ClubDetail() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text className="text-lg">Club not found</Text>
-        <TouchableOpacity 
+        <TouchableOpacity
           className="bg-blue-500 px-6 py-3 rounded-lg mt-4"
           onPress={() => router.back()}
         >
@@ -29,8 +29,25 @@ export default function ClubDetail() {
   };
 
   const handleContactClub = () => {
-    // In a real app, this would open phone/email
     alert(`Contact ${club.name} at ${club.contactInfo}`);
+  };
+
+  const getCompetitiveLevelColor = (level: string) => {
+    switch (level) {
+      case 'elite': return '#DC2626'; // Red
+      case 'travel': return '#F59E0B'; // Amber
+      case 'recreational': return '#10B981'; // Green
+      default: return '#6B7280'; // Gray
+    }
+  };
+
+  const getCompetitiveLevelIcon = (level: string) => {
+    switch (level) {
+      case 'elite': return 'trophy';
+      case 'travel': return 'medal';
+      case 'recreational': return 'star';
+      default: return 'circle';
+    }
   };
 
   return (
@@ -38,7 +55,7 @@ export default function ClubDetail() {
       <View className="p-4">
         {/* Header with Back Button */}
         <View className="flex-row items-center mb-6 pt-12">
-          <TouchableOpacity 
+          <TouchableOpacity
             className="mr-4"
             onPress={() => router.back()}
           >
@@ -52,52 +69,136 @@ export default function ClubDetail() {
           <View className="flex-row items-start justify-between mb-4">
             <View className="flex-1">
               <Text className="text-2xl font-bold mb-2">{club.name}</Text>
-              <Text className="text-lg text-gray-600 mb-4">{club.sport}</Text>
+              {club.teamName && (
+                <Text className="text-lg text-blue-600 font-semibold mb-2">{club.teamName}</Text>
+              )}
+              <View className="flex-row items-center mb-3">
+                <Text className="text-lg text-gray-600 mr-3">{club.sport}</Text>
+                <View className="flex-row items-center">
+                  <FontAwesome5 
+                    name={getCompetitiveLevelIcon(club.competitiveLevel)} 
+                    size={16} 
+                    color={getCompetitiveLevelColor(club.competitiveLevel)} 
+                  />
+                  <Text 
+                    className="ml-2 capitalize font-medium"
+                    style={{ color: getCompetitiveLevelColor(club.competitiveLevel) }}
+                  >
+                    {club.competitiveLevel}
+                  </Text>
+                </View>
+              </View>
             </View>
-            
-            <TouchableOpacity 
+
+            <TouchableOpacity
               onPress={() => toggleFavorite(club)}
               className="p-3"
             >
-              <FontAwesome5 
-                name={isFavorite(club.id) ? "heart" : "heart"} 
-                size={24} 
-                color={isFavorite(club.id) ? "#EF4444" : "#D1D5DB"} 
+              <FontAwesome5
+                name={isFavorite(club.id) ? "heart" : "heart"}
+                size={24}
+                color={isFavorite(club.id) ? "#EF4444" : "#D1D5DB"}
                 solid={isFavorite(club.id)}
               />
             </TouchableOpacity>
           </View>
-          
+
           <View className="flex-row items-center mb-3">
             <FontAwesome5 name="map-marker-alt" size={16} color="#6B7280" />
             <Text className="text-gray-700 ml-2">{club.location}</Text>
           </View>
-          
+
           <View className="flex-row items-center mb-3">
             <FontAwesome5 name="city" size={16} color="#6B7280" />
             <Text className="text-gray-700 ml-2">{club.city}, {club.zipCode}</Text>
           </View>
+
+          {club.ageGroup && (
+            <View className="flex-row items-center">
+              <FontAwesome5 name="calendar" size={16} color="#6B7280" />
+              <Text className="text-gray-700 ml-2">Birth Year: {club.ageGroup}</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Club Description */}
+        <View className="bg-white rounded-lg p-6 mb-4">
+          <Text className="text-xl font-semibold mb-4">About This Club</Text>
+          <Text className="text-gray-700 leading-6">{club.description}</Text>
         </View>
 
         {/* Club Details */}
         <View className="bg-white rounded-lg p-6 mb-4">
-          <Text className="text-xl font-semibold mb-4">Club Information</Text>
-          
+          <Text className="text-xl font-semibold mb-4">Program Information</Text>
           <View className="space-y-4">
             <View className="flex-row justify-between items-center">
               <Text className="text-gray-600">Age Range</Text>
               <Text className="font-medium">{club.ageRange}</Text>
             </View>
-            
             <View className="flex-row justify-between items-center">
-              <Text className="text-gray-600">Competitive Level</Text>
-              <Text className="font-medium capitalize">{club.competitiveLevel}</Text>
+              <Text className="text-gray-600">Season</Text>
+              <Text className="font-medium">{club.season}</Text>
             </View>
-            
             <View className="flex-row justify-between items-center">
               <Text className="text-gray-600">Monthly Fees</Text>
               <Text className="font-medium">{club.fees}</Text>
             </View>
+            <View className="flex-row justify-between items-center">
+              <Text className="text-gray-600">Available Spots</Text>
+              <Text className="font-medium">{club.maxPlayers - club.currentPlayers} of {club.maxPlayers}</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Practice Schedule */}
+        <View className="bg-white rounded-lg p-6 mb-4">
+          <Text className="text-xl font-semibold mb-4">Practice Schedule</Text>
+          <View className="flex-row flex-wrap">
+            {club.practiceDays.map((day, index) => (
+              <View key={index} className="bg-blue-100 px-3 py-2 rounded-lg mr-2 mb-2">
+                <Text className="text-blue-800 font-medium">{day}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {/* Coach Information */}
+        <View className="bg-white rounded-lg p-6 mb-4">
+          <Text className="text-xl font-semibold mb-4">Coach Information</Text>
+          <View className="flex-row items-center">
+            <View className="bg-green-100 w-12 h-12 rounded-full items-center justify-center mr-4">
+              <FontAwesome5 name="user-tie" size={20} color="#10B981" />
+            </View>
+            <View>
+              <Text className="text-lg font-semibold">{club.coachName}</Text>
+              <Text className="text-gray-600">Head Coach</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Facilities */}
+        <View className="bg-white rounded-lg p-6 mb-4">
+          <Text className="text-xl font-semibold mb-4">Facilities & Equipment</Text>
+          <View className="space-y-2">
+            {club.facilities.map((facility, index) => (
+              <View key={index} className="flex-row items-center">
+                <FontAwesome5 name="check-circle" size={16} color="#10B981" />
+                <Text className="text-gray-700 ml-3">{facility}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        {/* Achievements */}
+        <View className="bg-white rounded-lg p-6 mb-4">
+          <Text className="text-xl font-semibold mb-4">Recent Achievements</Text>
+          <View className="space-y-3">
+            {club.achievements.map((achievement, index) => (
+              <View key={index} className="flex-row items-start">
+                <FontAwesome5 name="trophy" size={16} color="#F59E0B" className="mt-1" />
+                <Text className="text-gray-700 ml-3 flex-1">{achievement}</Text>
+              </View>
+            ))}
           </View>
         </View>
 
@@ -118,7 +219,7 @@ export default function ClubDetail() {
 
         {/* Mock Reviews */}
         <View className="bg-white rounded-lg p-6 mb-4">
-          <Text className="text-xl font-semibold mb-4">Reviews</Text>
+          <Text className="text-xl font-semibold mb-4">Parent Reviews</Text>
           <View className="space-y-3">
             <View className="border-b border-gray-100 pb-3">
               <View className="flex-row items-center mb-2">
@@ -137,14 +238,14 @@ export default function ClubDetail() {
 
         {/* Action Buttons */}
         <View className="space-y-3 mb-6">
-          <TouchableOpacity 
+          <TouchableOpacity
             className="bg-green-500 py-4 rounded-lg"
             onPress={handleJoinClub}
           >
             <Text className="text-white text-center font-semibold text-lg">Join Club</Text>
           </TouchableOpacity>
-          
-          <TouchableOpacity 
+
+          <TouchableOpacity
             className="bg-blue-500 py-4 rounded-lg"
             onPress={handleContactClub}
           >

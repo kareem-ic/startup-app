@@ -60,24 +60,27 @@ const Explore = () => {
           searchResults.map(club => (
             <View key={club.id} className="bg-white p-4 rounded-lg mb-3 border border-gray-200">
               <View className="flex-row items-start justify-between">
-                <TouchableOpacity 
+                <TouchableOpacity
                   className="flex-1"
                   onPress={() => handleClubPress(club.id)}
                 >
                   <Text className="text-lg font-semibold">{club.name}</Text>
+                  {club.teamName && (
+                    <Text className="text-blue-600 font-medium mb-1">{club.teamName}</Text>
+                  )}
                   <Text className="text-gray-600">{club.sport} • {club.city}</Text>
                   <Text className="text-gray-500">{club.ageRange} • {club.competitiveLevel}</Text>
                   <Text className="text-gray-500">{club.fees}</Text>
                 </TouchableOpacity>
-                
-                <TouchableOpacity 
+
+                <TouchableOpacity
                   onPress={() => handleFavoritePress(club)}
                   className="ml-3 p-2"
                 >
-                  <FontAwesome5 
-                    name={isFavorite(club.id) ? "heart" : "heart"} 
-                    size={20} 
-                    color={isFavorite(club.id) ? "#EF4444" : "#D1D5DB"} 
+                  <FontAwesome5
+                    name={isFavorite(club.id) ? "heart" : "heart"}
+                    size={20}
+                    color={isFavorite(club.id) ? "#EF4444" : "#D1D5DB"}
                     solid={isFavorite(club.id)}
                   />
                 </TouchableOpacity>

@@ -80,6 +80,9 @@ const Featured = () => {
                     </Text>
                   </View>
                   <Text className="text-lg font-bold text-gray-900">{club.name}</Text>
+                  {club.teamName && (
+                    <Text className="text-blue-600 font-semibold mb-1">{club.teamName}</Text>
+                  )}
                   <Text className="text-blue-600 font-semibold">{club.sport}</Text>
                 </View>
 

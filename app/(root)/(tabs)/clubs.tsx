@@ -37,14 +37,14 @@ const Featured = () => {
           favorites.map(club => (
             <View key={club.id} className="bg-white p-4 rounded-lg mb-4 border border-gray-200">
               <View className="flex-row items-start justify-between">
-                <TouchableOpacity 
+                <TouchableOpacity
                   className="flex-1"
                   onPress={() => handleClubPress(club.id)}
                 >
-                  <View className="flex-row items-center mb-2">
-                    <Text className="text-lg font-semibold flex-1">{club.name}</Text>
-                    <Text className="text-yellow-500">⭐</Text>
-                  </View>
+                  <Text className="text-lg font-semibold">{club.name}</Text>
+                  {club.teamName && (
+                    <Text className="text-blue-600 font-medium mb-1">{club.teamName}</Text>
+                  )}
                   <Text className="text-gray-600">{club.sport} • {club.city}</Text>
                   <Text className="text-gray-500">{club.ageRange} • {club.competitiveLevel}</Text>
                   <Text className="text-gray-500">{club.fees}</Text>
